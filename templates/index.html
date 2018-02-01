@@ -1,0 +1,47 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+      <title>Emails</title>
+    </head>
+    <body>
+      <div id = 'wrapper'>
+        <!-- we can use the line below to see all of our data in our template -->
+        <!-- with all the data we can then construct a more structured output -->
+        <h2>Add an Email</h2>
+        <form action='/addEmails' method='POST'>
+          <p><label for="email">Email:<input type="text" name="email" id="email"></label></p>
+          <p><input type="submit" value="Add"></p>
+        </form>
+        
+          {% with messages = get_flashed_messages(with_categories=true) %}
+           {% if messages %}
+            {% for category, message in messages %}
+                <div id="{{ category }}">{{ message }}</div>
+            {% endfor %}
+           {% endif %}
+           {% endwith %}
+          <table>
+            <tr>
+              <th>Emails</th>
+              {% for emails in all_emails: %}
+                <tr>
+                  <td>{{emails['email']}}</td>
+                  <td>{{emails['created_at'].strftime("%m/%d/%y %I:%M%p")}}</td>
+                  <td>{{emails['id']}}</td>
+                  <td>
+                    <form action='/delete' method='POST'>
+                      <input type="hidden" name="id" value = "{{emails['id']}}">
+                      <p><input type="submit" value="Delete"></p>
+                    </form>
+                  </td>
+                </tr>
+              {% endfor %}
+          </table>
+          
+         
+
+        
+
+      </div>
+    </body>
+</html>
